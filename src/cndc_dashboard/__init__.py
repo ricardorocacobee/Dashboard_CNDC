@@ -1,0 +1,1 @@
+"""Local CNDC dashboard application."""

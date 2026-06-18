@@ -1,0 +1,14 @@
+[
+  {
+    "tipo": "POSTDESPACHO",
+    "fecha": "16.06.2026"
+  },
+  {
+    "tipo": "PREDESPACHO",
+    "fecha": "18.06.2026"
+  },
+  {
+    "tipo": "TIEMPO_REAL",
+    "fecha": "18.06.2026"
+  }
+]

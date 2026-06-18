@@ -1,0 +1,39 @@
+﻿# Entorno virtual
+.venv/
+venv/
+ENV/
+
+# Capturas de red
+*.har
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Pruebas y herramientas
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+
+# Visual Studio Code
+.vscode/
+
+# Archivos generados
+data/raw/*
+data/normalized/*
+logs/*
+
+# Conservar carpetas vacías
+!data/raw/.gitkeep
+!data/normalized/.gitkeep
+!logs/.gitkeep
+
+# Archivos temporales
+*.tmp
+*.log
+.DS_Store
+Thumbs.db

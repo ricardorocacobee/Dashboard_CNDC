@@ -1,0 +1,18 @@
+{
+  "fecha_operacion": "2026-06-18",
+  "modo_seleccion": "TIEMPO_REAL",
+  "modo_lectura": "HAR",
+  "fecha_ejecucion_bolivia": "2026-06-18T10:43:48.065035-04:00",
+  "timezone": "America/La_Paz",
+  "interpretacion_hora_frecuencia": "wall_clock_bolivia_with_misleading_z",
+  "descripcion_hora_frecuencia": "Los timestamps terminados en Z del endpoint CNDC se interpretan como hora local boliviana sin desplazamiento.",
+  "carpeta_raw": "verification_har\\data\\raw\\2026-06-18",
+  "carpeta_normalized": "verification_har\\data\\normalized\\2026-06-18",
+  "urls": {
+    "generacion_actual": "https://www.cndc.bo/wp-json/cndc/v1/rt/generacion?fecha=2026-06-18",
+    "generacion_ayer": "https://www.cndc.bo/wp-json/cndc/v1/rt/generacion?fecha=2026-06-17",
+    "generacion_7dias": "https://www.cndc.bo/wp-json/cndc/v1/rt/generacion?fecha=2026-06-11",
+    "demanda": "https://www.cndc.bo/wp-json/cndc/v1/rt/demanda?fecha=2026-06-18",
+    "frecuencia": "https://www.cndc.bo/wp-json/cndc/v1/rt/frecuencia/historial?registros=360"
+  }
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DEMANDA POR DEPARTAMENTO</title>
+    <link rel="stylesheet" href="/static/css/fullscreen-dashboard.css" />
+    <script src="/static/vendor/plotly.min.js"></script>
+  </head>
+  <body class="dashboard-page" data-page="demanda">
+    <header class="top-bar">
+      <h1>DEMANDA POR DEPARTAMENTO</h1>
+      <div class="top-controls">
+        <label>Fecha: <input id="dateInput" class="compact-date" type="date" /></label>
+        <button id="refreshButton" class="compact-button" type="button">Actualizar ahora</button>
+      </div>
+    </header>
+    <main class="chart-area">
+      <div id="chart" class="plot-container"></div>
+    </main>
+    <footer id="technicalMetadata" class="technical-metadata" title="Fuente técnica interna: API">
+      <span>FECHA DE OPERACIÓN: --</span>
+      <span>ESTADO: CARGANDO</span>
+      <span>ÚLTIMA ACTUALIZACIÓN: --</span>
+      <span>FUENTE: CNDC</span>
+    </footer>
+    <div id="statusToast" class="status-toast" aria-live="polite"></div>
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/demanda.js"></script>
+  </body>
+</html>

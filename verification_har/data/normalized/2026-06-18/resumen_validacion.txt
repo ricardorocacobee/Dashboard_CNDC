@@ -1,0 +1,40 @@
+PRUEBA DE EXTRACCIÓN CNDC - FASE 1
+
+Fecha seleccionada automaticamente: 2026-06-18
+Modo de seleccion: TIEMPO_REAL
+Modo de lectura: HAR
+
+GENERACION
+Previsto: 96 intervalos, 96 con dato, 0 vacios
+Total: 96 intervalos, 33 con dato, 63 vacios
+Termoeléctrica: 96 intervalos, 33 con dato, 63 vacios
+Hidroeléctrica: 96 intervalos, 33 con dato, 63 vacios
+Solar: 96 intervalos, 33 con dato, 63 vacios
+Eólica: 96 intervalos, 33 con dato, 63 vacios
+Renovable: 96 intervalos, 33 con dato, 63 vacios
+Total Ayer: 96 intervalos, 96 con dato, 0 vacios
+Total Hace 7 días: 96 intervalos, 95 con dato, 1 vacios
+
+DEMANDA
+Santa Cruz: 96 intervalos, 33 con dato, 63 vacios
+La Paz: 96 intervalos, 33 con dato, 63 vacios
+Cochabamba: 96 intervalos, 33 con dato, 63 vacios
+Potosí: 96 intervalos, 33 con dato, 63 vacios
+Oruro: 96 intervalos, 33 con dato, 63 vacios
+Tarija: 96 intervalos, 33 con dato, 63 vacios
+Chuquisaca: 96 intervalos, 33 con dato, 63 vacios
+Beni: 96 intervalos, 33 con dato, 63 vacios
+Total SIN: 96 intervalos, 33 con dato, 63 vacios
+
+FRECUENCIA
+Registros descargados: 360
+Registros normalizados: 360
+Valor minimo: 49.854
+Valor maximo: 50.124
+Ultima lectura: 2026-06-18T09:02:41-04:00
+
+ADVERTENCIAS
+Series desconocidas: Ninguna
+Series faltantes: Ninguna
+Registros de frecuencia invalidos: 0
+Interpretacion timestamps frecuencia: Los timestamps terminados en Z del endpoint de frecuencia del CNDC fueron interpretados como hora local de Bolivia sin desplazamiento del reloj, debido al comportamiento observado de la fuente.

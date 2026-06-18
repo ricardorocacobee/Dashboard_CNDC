@@ -1,0 +1,10 @@
+{
+  "base_url": "https://www.cndc.bo/wp-json/cndc/v1/rt",
+  "http_timeout_seconds": 30,
+  "http_retries": 3,
+  "frequency_records": 360,
+  "timezone": "America/La_Paz",
+  "raw_data_directory": "data/raw",
+  "normalized_data_directory": "data/normalized",
+  "logs_directory": "logs"
+}
