@@ -2,7 +2,7 @@
   const chart = document.getElementById("chart");
   const refreshButton = document.getElementById("refreshButton");
 
-  function referenceTrace(labels, value, name, dash) {
+  function referenceTrace(labels, value, name, dash, color) {
     return {
       x: labels,
       y: labels.map(() => value),
@@ -10,7 +10,7 @@
       mode: "lines",
       type: "scatter",
       hoverinfo: "skip",
-      line: { width: 1.5, dash },
+      line: { width: 1.3, dash, color },
     };
   }
 
@@ -25,17 +25,18 @@
         name: "Frecuencia",
         mode: "lines",
         type: "scatter",
-        line: { width: 3, color: "#1267a8" },
+        line: { width: 3, color: CNDC.COBEE_COLORS.primary },
       },
-      referenceTrace(payload.labels, payload.limite_inferior, "49.75 Hz", "dash"),
-      referenceTrace(payload.labels, payload.nominal, "50.00 Hz", "dot"),
-      referenceTrace(payload.labels, payload.limite_superior, "50.25 Hz", "dash"),
+      referenceTrace(payload.labels, payload.limite_inferior, "49.75 Hz", "dash", CNDC.COBEE_COLORS.accent),
+      referenceTrace(payload.labels, payload.nominal, "50.00 Hz", "dot", CNDC.COBEE_COLORS.green),
+      referenceTrace(payload.labels, payload.limite_superior, "50.25 Hz", "dash", CNDC.COBEE_COLORS.red),
     ];
     const layout = CNDC.baseLayout("Hz", payload.labels, 1);
     layout.yaxis.range = [49.4, 50.6];
     layout.xaxis.tickmode = "array";
     layout.xaxis.tickvals = CNDC.sparseTickValues(payload.labels, 12);
     layout.margin = { l: 55, r: 18, t: 12, b: 62 };
+    layout.uirevision = "frecuencia-sin";
     await CNDC.reactChart(chart, traces, layout);
     document.getElementById("lastFrequency").textContent = payload.ultimo_valor == null ? "--" : `${payload.ultimo_valor} Hz`;
     document.getElementById("lastFrequencyTime").textContent = payload.ultima_hora || "--";

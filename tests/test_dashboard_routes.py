@@ -162,3 +162,38 @@ def test_scripts_are_independent_and_keep_nulls() -> None:
     assert "|| 0" not in demand
     assert ".map((value) => value || 0)" not in generation
     assert ".map((value) => value || 0)" not in demand
+
+
+def test_cobee_palette_and_series_styles_are_centralized() -> None:
+    common = Path("src/cndc_dashboard/static/js/common.js").read_text(encoding="utf-8")
+    assert "const COBEE_COLORS" in common
+    assert 'primary: "#0058A0"' in common
+    assert 'historicalYesterday: "#6B7280"' in common
+    assert 'historicalWeekAgo: "#B59A30"' in common
+    assert "const GENERATION_SERIES_STYLES" in common
+    assert "const DEMAND_SERIES_STYLES" in common
+    assert "TOT: { color: COBEE_COLORS.accent, width: 4" in common
+    assert "TOTAL_SIN: { color: COBEE_COLORS.primary, width: 4.5" in common
+
+
+def test_generation_historical_comparisons_are_legendonly_and_uirevision_is_stable() -> None:
+    common = Path("src/cndc_dashboard/static/js/common.js").read_text(encoding="utf-8")
+    generation = Path("src/cndc_dashboard/static/js/generacion.js").read_text(encoding="utf-8")
+    assert 'TOT: { color: COBEE_COLORS.accent, width: 4, dash: "solid" }' in common
+    assert 'TOTAL_AYER: { color: COBEE_COLORS.historicalYesterday, width: 1.7, dash: "dash" }' in common
+    assert 'TOTAL_HACE_7_DIAS: { color: COBEE_COLORS.historicalWeekAgo, width: 1.7, dash: "dot" }' in common
+    assert 'if (name === "Total Ayer") return GENERATION_SERIES_STYLES.TOTAL_AYER' in common
+    assert 'if (name === "Total Hace 7 días") return GENERATION_SERIES_STYLES.TOTAL_HACE_7_DIAS' in common
+    assert 'if (name === "Total") return GENERATION_SERIES_STYLES.TOT' in common
+    assert 'serie.nombre === "Total Ayer" || serie.nombre === "Total Hace 7 días"' in generation
+    assert 'visible: isHistoricalComparison ? "legendonly" : true' in generation
+    assert "layout.uirevision = `generacion-${selectedDate}`" in generation
+
+
+def test_frequency_main_line_is_wider_than_references() -> None:
+    frequency = Path("src/cndc_dashboard/static/js/frecuencia.js").read_text(encoding="utf-8")
+    assert "line: { width: 3, color: CNDC.COBEE_COLORS.primary }" in frequency
+    assert "line: { width: 1.3, dash, color }" in frequency
+    assert "CNDC.COBEE_COLORS.accent" in frequency
+    assert "CNDC.COBEE_COLORS.green" in frequency
+    assert "CNDC.COBEE_COLORS.red" in frequency

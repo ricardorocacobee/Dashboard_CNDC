@@ -7,17 +7,22 @@
   let controller = null;
 
   function traceFor(serie) {
+    const style = CNDC.generationStyle(serie);
+    const isHistoricalComparison = serie.nombre === "Total Ayer" || serie.nombre === "Total Hace 7 días";
     return {
       x: window.currentLabels,
       y: serie.valores,
       name: serie.nombre,
+      uid: serie.codigo === "TOT" ? serie.nombre : serie.codigo,
       mode: "lines",
       type: "scatter",
       connectgaps: false,
       line: {
-        width: serie.nombre === "Total" ? 3 : 2,
-        dash: serie.nombre === "Previsto" ? "dash" : serie.nombre.includes("Ayer") || serie.nombre.includes("7") ? "dot" : "solid",
+        color: style.color,
+        width: style.width,
+        dash: style.dash,
       },
+      visible: isHistoricalComparison ? "legendonly" : true,
     };
   }
 
@@ -36,7 +41,9 @@
     const payload = await CNDC.apiFetch(`/api/generacion?fecha=${selectedDate}`, { signal: controller.signal });
     window.currentLabels = payload.labels;
     const traces = payload.series.map(traceFor);
-    await CNDC.reactChart(chart, traces, CNDC.baseLayout("MW", payload.labels, 2));
+    const layout = CNDC.baseLayout("MW", payload.labels, 2);
+    layout.uirevision = `generacion-${selectedDate}`;
+    await CNDC.reactChart(chart, traces, layout);
     CNDC.updateMetadata(payload, selectedDate);
     CNDC.showToast(payload.source === "API" ? "Actualizado" : "Datos de respaldo");
   }

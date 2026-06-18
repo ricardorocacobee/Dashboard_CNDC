@@ -7,15 +7,18 @@
   let controller = null;
 
   function traceFor(serie) {
+    const style = CNDC.demandStyle(serie);
     return {
       x: window.currentLabels,
       y: serie.valores,
       name: serie.nombre,
+      uid: serie.codigo,
       mode: "lines",
       type: "scatter",
       connectgaps: false,
       line: {
-        width: serie.codigo === "TOTAL_SIN" ? 4 : 2,
+        color: style.color,
+        width: style.width,
       },
     };
   }
@@ -35,7 +38,9 @@
     const payload = await CNDC.apiFetch(`/api/demanda?fecha=${selectedDate}`, { signal: controller.signal });
     window.currentLabels = payload.labels;
     const traces = payload.series.map(traceFor);
-    await CNDC.reactChart(chart, traces, CNDC.baseLayout("MW", payload.labels, 2));
+    const layout = CNDC.baseLayout("MW", payload.labels, 2);
+    layout.uirevision = `demanda-${selectedDate}`;
+    await CNDC.reactChart(chart, traces, layout);
     CNDC.updateMetadata(payload, selectedDate);
     CNDC.showToast(payload.source === "API" ? "Actualizado" : "Datos de respaldo");
   }
