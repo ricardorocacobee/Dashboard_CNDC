@@ -14,6 +14,7 @@ from cndc_extractor.logging_config import configure_logging
 from .dashboard_service import DashboardService
 from .plotly_vendor import ensure_plotly_vendor
 from .routes import router
+from .settings import DashboardRotationSettings
 
 
 def create_app(service: DashboardService | None = None) -> FastAPI:
@@ -27,6 +28,7 @@ def create_app(service: DashboardService | None = None) -> FastAPI:
     app.state.logger = logger
     app.state.extractor_settings = settings
     app.state.dashboard_service = service or DashboardService(settings, logger=logger)
+    app.state.dashboard_rotation = DashboardRotationSettings.load()
     app.include_router(router)
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
 

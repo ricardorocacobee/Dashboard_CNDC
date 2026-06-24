@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard rotativo CNDC</title>
+    <link rel="stylesheet" href="/static/css/dashboard-rotator.css" />
+  </head>
+  <body>
+    <iframe
+      id="dashboardFrame"
+      class="dashboard-frame"
+      title="Pantalla actual del dashboard"
+      referrerpolicy="no-referrer-when-downgrade"
+    ></iframe>
+
+    <div id="screenLabel" class="screen-label" aria-live="polite"></div>
+    <div id="loadingStatus" class="loading-status" aria-live="polite">Cargando pantalla...</div>
+    <div id="loadWarning" class="load-warning" aria-live="polite"></div>
+
+    <nav id="rotatorControls" class="rotator-controls" aria-label="Controles del dashboard rotativo">
+      <button
+        id="previousScreen"
+        class="rotator-button"
+        type="button"
+        aria-label="Pantalla anterior"
+        title="Pantalla anterior"
+      >
+        &lsaquo;
+      </button>
+      <div id="pageIndicators" class="page-indicators" aria-label="Indicadores de paginas"></div>
+      <button
+        id="nextScreen"
+        class="rotator-button"
+        type="button"
+        aria-label="Pantalla siguiente"
+        title="Pantalla siguiente"
+      >
+        &rsaquo;
+      </button>
+      <button
+        id="pauseRotation"
+        class="rotator-button"
+        type="button"
+        aria-label="Pausar rotacion"
+        title="Pausar rotacion"
+      >
+        &#10074;&#10074;
+      </button>
+    </nav>
+
+    <script src="/static/js/dashboard-rotator.js"></script>
+  </body>
+</html>

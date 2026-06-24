@@ -6,5 +6,44 @@
   "timezone": "America/La_Paz",
   "raw_data_directory": "data/raw",
   "normalized_data_directory": "data/normalized",
-  "logs_directory": "logs"
+  "logs_directory": "logs",
+  "dashboard_rotation": {
+    "enabled": true,
+    "interval_seconds": 45,
+    "show_controls": true,
+    "auto_hide_controls_seconds": 4,
+    "load_timeout_seconds": 12,
+    "pages": [
+      {
+        "id": "generacion",
+        "name": "Generaci\u00f3n horaria",
+        "url": "/generacion.html",
+        "enabled": true
+      },
+      {
+        "id": "demanda",
+        "name": "Demanda por departamento",
+        "url": "/demanda.html",
+        "enabled": false
+      },
+      {
+        "id": "frecuencia",
+        "name": "Frecuencia del SIN",
+        "url": "/frecuencia.html",
+        "enabled": true
+      },
+      {
+        "id": "volumenes_scada",
+        "name": "Vol\u00famenes SCADA",
+        "url": "http://10.101.10.210/scadawww/indexvol.htm",
+        "enabled": true
+      },
+      {
+        "id": "scada",
+        "name": "Informaci\u00f3n SCADA",
+        "url": "http://10.101.10.210/scadawww/",
+        "enabled": true
+      }
+    ]
+  }
 }

@@ -2,7 +2,7 @@
 
 Proyecto local para descargar, normalizar y visualizar datos publicos de Operacion en Tiempo Real del CNDC Bolivia.
 
-La fase 1 genera archivos crudos y CSV normalizados. La fase 2 agrega una pagina web local independiente con tres graficas: generacion, demanda y frecuencia del SIN. Esta entrega no modifica el dashboard COBEE, no integra iframes y no toca paginas SCADA.
+La fase 1 genera archivos crudos y CSV normalizados. La fase 2 agrega paginas web locales independientes con tres graficas: generacion, demanda y frecuencia del SIN. La fase actual agrega un dashboard rotativo final que embebe esas tres paginas y dos pantallas SCADA en un iframe a pantalla completa. Esta entrega no modifica el dashboard productivo COBEE ni toca la configuracion SCADA.
 
 ## Instalacion
 
@@ -41,6 +41,7 @@ python -m cndc_dashboard
 Abrir navegador:
 
 ```text
+http://127.0.0.1:8000/dashboard.html
 http://127.0.0.1:8000/generacion.html
 http://127.0.0.1:8000/demanda.html
 http://127.0.0.1:8000/frecuencia.html
@@ -111,10 +112,12 @@ La pagina no consulta directamente la API del CNDC desde el navegador. Todas las
 Endpoints:
 
 ```text
-GET  /                         -> redirige a /generacion.html
+GET  /                         -> redirige a /dashboard.html
+GET  /dashboard.html
 GET  /generacion.html
 GET  /demanda.html
 GET  /frecuencia.html
+GET  /api/dashboard/config
 GET  /api/status
 GET  /api/fechas/latest
 GET  /api/generacion?fecha=YYYY-MM-DD
@@ -134,6 +137,73 @@ La interfaz incluye:
 - respaldo en memoria y lectura de CSV normalizados si la API falla.
 
 Las paginas `generacion.html`, `demanda.html` y `frecuencia.html` estan disenadas para uso a pantalla completa o dentro de un iframe. La grafica ocupa casi todo el viewport; los metadatos inferiores son texto tecnico discreto y la fuente visible se muestra como `CNDC`.
+
+## Dashboard rotativo final
+
+Inicio:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+python -m cndc_dashboard
+```
+
+Acceso:
+
+```text
+http://127.0.0.1:8000/dashboard.html
+```
+
+El dashboard rotativo contiene un unico iframe a pantalla completa y cambia automaticamente cada 40 segundos. El orden configurado es:
+
+```text
+Generacion
+Demanda
+Frecuencia
+Volumenes SCADA
+Informacion SCADA
+```
+
+Controles disponibles:
+
+- anterior;
+- siguiente;
+- indicadores de pantalla;
+- pausa/reanudar;
+- flecha izquierda y flecha derecha;
+- barra espaciadora.
+
+Los controles estan en la esquina inferior derecha, se muestran al cargar, aumentan opacidad con el mouse o foco de teclado y se atenuan despues de 4 segundos sin interaccion. Si la rotacion queda pausada, permanecen visibles.
+
+La configuracion esta centralizada en `config/settings.json`, seccion `dashboard_rotation`. Ahi se cambian:
+
+- URLs;
+- orden;
+- paginas habilitadas;
+- intervalo de rotacion;
+- tiempo de autoocultacion;
+- timeout de carga.
+
+Las primeras tres pantallas usan rutas relativas:
+
+```text
+/generacion.html
+/demanda.html
+/frecuencia.html
+```
+
+Las pantallas SCADA usan actualmente:
+
+```text
+http://10.101.10.210/scadawww/indexvol.htm
+http://10.101.10.210/scadawww/
+```
+
+Limitaciones:
+
+- las paginas SCADA requieren acceso a la red interna;
+- la prueba se ejecuta localmente;
+- todavia no se ha instalado en el servidor productivo;
+- si en el futuro el dashboard se publica mediante HTTPS, las paginas SCADA HTTP podrian ser bloqueadas como contenido mixto y seria necesario revisar la infraestructura.
 
 ## Graficas
 

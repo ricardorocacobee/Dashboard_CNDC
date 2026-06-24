@@ -1,0 +1,158 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.dashboard-frame {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #ffffff;
+}
+
+.rotator-controls {
+    position: fixed;
+    right: 12px;
+    bottom: 10px;
+    z-index: 100000;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 4px 7px;
+    border-radius: 18px;
+
+    background: rgba(15, 31, 46, 0.52);
+    backdrop-filter: blur(3px);
+
+    opacity: 1;
+    transition: opacity 180ms ease;
+}
+
+.rotator-controls.is-idle {
+    opacity: 0.28;
+}
+
+.rotator-controls:hover,
+.rotator-controls:focus-within,
+.rotator-controls.is-pinned {
+    opacity: 1;
+}
+
+.rotator-button,
+.indicator-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.88);
+    background: transparent;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.rotator-button {
+    font-size: 18px;
+}
+
+.indicator-button {
+    width: 16px;
+    height: 28px;
+    font-size: 14px;
+}
+
+.rotator-button:hover,
+.rotator-button:focus-visible,
+.indicator-button:hover,
+.indicator-button:focus-visible {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.14);
+    outline: none;
+}
+
+.page-indicators {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    white-space: nowrap;
+}
+
+.screen-label {
+    position: fixed;
+    left: 10px;
+    bottom: 8px;
+    z-index: 100000;
+    font-size: 8px;
+    line-height: 1.2;
+    color: rgba(40, 40, 40, 0.45);
+    pointer-events: none;
+}
+
+.loading-status,
+.load-warning {
+    position: fixed;
+    right: 12px;
+    top: 10px;
+    z-index: 100000;
+    display: none;
+    font-size: 10px;
+    line-height: 1.2;
+    color: rgba(40, 40, 40, 0.5);
+    background: rgba(255, 255, 255, 0.72);
+    padding: 3px 6px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.load-warning {
+    color: rgba(120, 47, 47, 0.68);
+}
+
+.loading-status.is-visible,
+.load-warning.is-visible {
+    display: block;
+}
+
+.controls-disabled .rotator-controls {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .rotator-controls {
+        right: 8px;
+        bottom: 8px;
+        gap: 3px;
+        padding: 3px 6px;
+    }
+
+    .rotator-button {
+        width: 26px;
+        height: 26px;
+        font-size: 16px;
+    }
+
+    .indicator-button {
+        width: 14px;
+        height: 26px;
+        font-size: 12px;
+    }
+}

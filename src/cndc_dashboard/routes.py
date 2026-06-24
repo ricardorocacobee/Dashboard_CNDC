@@ -20,7 +20,12 @@ def service_for(request: Request):
 
 @router.get("/", response_class=HTMLResponse)
 def index():
-    return RedirectResponse("/generacion.html", status_code=307)
+    return RedirectResponse("/dashboard.html", status_code=307)
+
+
+@router.get("/dashboard.html", response_class=HTMLResponse)
+def dashboard_page(request: Request):
+    return templates.TemplateResponse(request, "dashboard.html")
 
 
 @router.get("/generacion.html", response_class=HTMLResponse)
@@ -36,6 +41,11 @@ def demand_page(request: Request):
 @router.get("/frecuencia.html", response_class=HTMLResponse)
 def frequency_page(request: Request):
     return templates.TemplateResponse(request, "frecuencia.html")
+
+
+@router.get("/api/dashboard/config")
+def dashboard_config(request: Request):
+    return request.app.state.dashboard_rotation.public_payload()
 
 
 @router.get("/api/status")

@@ -5,6 +5,7 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from cndc_dashboard.app import create_app
+from cndc_dashboard.settings import DashboardRotationSettings
 
 
 class FakeService:
@@ -85,10 +86,101 @@ def test_api_generation_demand_frequency() -> None:
     assert frequency["limite_superior"] == 50.25
 
 
-def test_root_redirects_to_generation_page() -> None:
+def test_root_redirects_to_dashboard_page() -> None:
     response = client().get("/", follow_redirects=False)
     assert response.status_code == 307
-    assert response.headers["location"] == "/generacion.html"
+    assert response.headers["location"] == "/dashboard.html"
+
+
+def test_dashboard_page_and_static_assets() -> None:
+    test_client = client()
+    response = test_client.get("/dashboard.html")
+    assert response.status_code == 200
+    html = response.text
+    assert '<iframe' in html
+    assert 'id="dashboardFrame"' in html
+    assert 'class="dashboard-frame"' in html
+    assert 'id="previousScreen"' in html
+    assert 'id="nextScreen"' in html
+    assert 'id="pauseRotation"' in html
+    assert 'id="pageIndicators"' in html
+    assert 'id="screenLabel"' in html
+    assert 'id="loadingStatus"' in html
+    assert 'id="loadWarning"' in html
+    assert "/static/css/dashboard-rotator.css" in html
+    assert "/static/js/dashboard-rotator.js" in html
+    assert "cdn" not in html.lower()
+
+    assert test_client.get("/static/css/dashboard-rotator.css").status_code == 200
+    assert test_client.get("/static/js/dashboard-rotator.js").status_code == 200
+
+
+def test_dashboard_config_endpoint_filters_enabled_pages() -> None:
+    payload = client().get("/api/dashboard/config").json()
+    assert payload["interval_seconds"] == 40
+    assert payload["show_controls"] is True
+    assert payload["auto_hide_controls_seconds"] == 4
+    assert payload["load_timeout_seconds"] == 12
+
+    pages = payload["pages"]
+    assert len(pages) == 5
+    assert [page["url"] for page in pages[:3]] == [
+        "/generacion.html",
+        "/demanda.html",
+        "/frecuencia.html",
+    ]
+    assert [page["url"] for page in pages[3:]] == [
+        "http://10.101.10.210/scadawww/indexvol.htm",
+        "http://10.101.10.210/scadawww/",
+    ]
+    assert all("enabled" not in page for page in pages)
+
+
+def test_dashboard_rotation_settings_can_disable_pages() -> None:
+    settings = DashboardRotationSettings.from_mapping(
+        {
+            "interval_seconds": 40,
+            "show_controls": True,
+            "auto_hide_controls_seconds": 4,
+            "pages": [
+                {"id": "a", "name": "A", "url": "/a.html", "enabled": True},
+                {"id": "b", "name": "B", "url": "/b.html", "enabled": False},
+            ],
+        },
+    )
+    assert [page["id"] for page in settings.public_payload()["pages"]] == ["a"]
+
+
+def test_dashboard_rotator_css_fills_viewport_without_scaling() -> None:
+    css = Path("src/cndc_dashboard/static/css/dashboard-rotator.css").read_text(encoding="utf-8")
+    assert "overflow: hidden" in css
+    assert ".dashboard-frame" in css
+    frame_block = css.split(".dashboard-frame", 1)[1].split("}", 1)[0]
+    assert "position: fixed" in frame_block
+    assert "inset: 0" in frame_block
+    assert "width: 100%" in frame_block
+    assert "height: 100%" in frame_block
+    assert "border: 0" in frame_block
+    assert "zoom" not in css
+    assert "transform: scale" not in css
+
+
+def test_dashboard_rotator_script_handles_timers_loading_and_keyboard() -> None:
+    script = Path("src/cndc_dashboard/static/js/dashboard-rotator.js").read_text(encoding="utf-8")
+    assert 'const CONFIG_URL = "/api/dashboard/config"' in script
+    assert "setInterval" not in script
+    assert "window.setTimeout(() => nextPage(false), state.intervalMs)" in script
+    assert "restartRotationTimer();" in script
+    assert "clearRotationTimer();" in script
+    assert "handleLoadTimeout" in script
+    assert "navigationToken" in script
+    assert "No fue posible cargar esta pantalla." in script
+    assert "ArrowLeft" in script
+    assert "ArrowRight" in script
+    assert 'event.key === " "' in script
+    assert "sessionStorage" in script
+    assert "localStorage" not in script
+    assert "http://10.101.10.210" not in script
 
 
 def test_three_independent_pages() -> None:
